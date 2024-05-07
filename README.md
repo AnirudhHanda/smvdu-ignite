@@ -1,10 +1,10 @@
+<!-- Project Title -->
+<h1 align="center">SMVDU IGNITE</h1>
+
 <!-- SMVDU IGNITE Logo -->
 <p align="center">
   <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="200">
 </p>
-
-<!-- Project Title -->
-<h1 align="center">SMVDU IGNITE</h1>
 
 <!-- Project Description -->
 <p align="center">A Better Resource Sharing Platform for SMVD University</p>
