@@ -47,7 +47,7 @@ SMVDU IGNITE is a cutting-edge resource sharing platform tailored for the needs 
 
 <!-- Contributing -->
 ## Contributing
-Contributions are welcome! Please see the [Contribution Guidelines](CONTRIBUTING.md).
+Contributions are welcome!
 
 
 <!-- Improvements -->
