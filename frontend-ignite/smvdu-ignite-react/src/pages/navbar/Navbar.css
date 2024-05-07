@@ -1,0 +1,59 @@
+.logoText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s ease;
+}
+
+.wrap{
+    display: flex;
+    flex-direction: row;
+}
+
+.logoName {
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px; /* Adjust the font size as needed */
+    font-weight: bold;
+    color: #ffffff; /* Whitish color */
+    margin: 0; /* Remove any default margin */
+    letter-spacing: 4px; /* Add letter spacing */
+    cursor: pointer;
+}
+
+.smallName {
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px; /* Adjust the font size as needed */
+    color: #808080; /* Greyish color */
+    margin: 0; /* Remove any default margin */
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.logoImage {
+    width: 4rem;
+    height: auto; /* Ensure the aspect ratio is maintained */
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.logoImage:hover + .logoText {
+    opacity: 0; /* Hide the logo text on hover */
+    transition: 0.5s ease;
+}
+
+
+.logoText p:hover{
+    filter: drop-shadow(0 0 1em #ffffff);
+}
+.logoText h1:hover{
+    filter: drop-shadow(0 0 1em #ffffff);
+}
+
+.logoImage:hover {
+    transform: translateX(40px); /* Adjust the value as needed */
+    transition: 0.5s ease;
+    filter: drop-shadow(0 0 2em #ffffff);
+}
+
+
