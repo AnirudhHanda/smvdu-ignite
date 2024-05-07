@@ -42,7 +42,11 @@ SMVDU IGNITE is a cutting-edge resource sharing platform tailored for the needs 
 1. Clone the repository.
 2. Navigate to the project directory.
 3. Install dependencies using `npm install`.
-4. Run the development server using `npm start`.
+4. Run the frontend development server using `npm run dev`.
+5. Install the PostgreSQL database in your local machine.
+6. Create a local database called registration.
+7. Run the backend server using `mvn spring-boot:run`.
+
 
 
 <!-- Contributing -->
