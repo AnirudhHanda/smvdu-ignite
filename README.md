@@ -14,6 +14,11 @@
   <img src="github-assets/logo-gif.gif" alt="SMVDU IGNITE Brand GIF">
 </p>
 
+<!-- SMVDU IGNITE Logo -->
+<p align="center">
+  <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="400">
+</p>
+
 <!-- Project Overview -->
 ## Overview
 SMVDU IGNITE is a cutting-edge resource sharing platform tailored for the needs of Shri Mata Vaishno Devi University (SMVDU) students, faculty, and staff. It simplifies the process of sharing and accessing educational resources, promoting collaboration, and enhancing the learning experience.
