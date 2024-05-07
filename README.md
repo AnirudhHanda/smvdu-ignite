@@ -26,7 +26,7 @@ SMVDU IGNITE is a cutting-edge resource sharing platform tailored for the needs 
 - **Community-driven Learning**: Contribute to the platform by sharing your own study materials and expertise.
 
 ## Technologies Used
-- **Frontend**: React.js, Tailwind CSS, Shadow.css
+- **Frontend**: React.js, Tailwind CSS, Shadecn/UI
 - **Backend**: Spring Boot, Java, Hibernate
 - **Database**: PostgreSQL
 - **Cloud Services**: AWS S3
