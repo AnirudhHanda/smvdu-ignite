@@ -1,5 +1,5 @@
 <!-- SMVDU IGNITE Logo -->
-<p align="left">
+<p align="center">
   <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="500">
 </p>
 
