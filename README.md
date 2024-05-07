@@ -37,12 +37,11 @@ SMVDU IGNITE is a cutting-edge resource sharing platform tailored for the needs 
 - **Database**: PostgreSQL
 - **Cloud Services**: AWS S3
 - **Authentication**: JSON Web Tokens (JWT)
-- **Communication**: WebSocket
 - **Version Control**: Git, GitHub
+- **Email Service**: JavaMail API for sending confirmation emails
+- **Other Tools**: Maven for dependency management, Lombok for reducing boilerplate code
 
-<!-- Demo -->
-## Demo
-![SMVDU IGNITE Demo](https://your-demo-gif-url.com)
+
 
 <!-- Installation -->
 ## Installation
@@ -51,18 +50,11 @@ SMVDU IGNITE is a cutting-edge resource sharing platform tailored for the needs 
 3. Install dependencies using `npm install`.
 4. Run the development server using `npm start`.
 
-<!-- License -->
-## License
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 <!-- Contributing -->
 ## Contributing
 Contributions are welcome! Please see the [Contribution Guidelines](CONTRIBUTING.md).
 
-<!-- Acknowledgements -->
-## Acknowledgements
-- Special thanks to [Open Source University](https://opensourceuniversity.org/) for inspiration.
-- Hat tip to anyone whose code was used.
 
 <!-- Improvements -->
 ## Future Improvements
