@@ -1,13 +1,10 @@
-<!-- Container for logo and title -->
-<div style="display: flex; align-items: center;">
-  <!-- SMVDU IGNITE Logo -->
-  <p align="left">
-    <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="200">
-  </p>
+<!-- SMVDU IGNITE Logo -->
+<p align="left">
+  <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="500">
+</p>
 
-  <!-- Project Title -->
-  <h1 align="center">SMVDU IGNITE</h1>
-</div>
+<!-- Project Title -->
+<h1 align="center">SMVDU IGNITE</h1>
 
 <!-- Project Description -->
 <p align="center">A Better Resource Sharing Platform for SMVD University</p>
