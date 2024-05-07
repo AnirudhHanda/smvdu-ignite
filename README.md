@@ -1,6 +1,6 @@
 <!-- SMVDU IGNITE Logo -->
 <p align="center">
-  <img src="github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="200">
+  <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="200">
 </p>
 
 <!-- Project Title -->
