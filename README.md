@@ -1,8 +1,3 @@
-<!-- SMVDU IGNITE Logo -->
-<p align="center">
-  <img src="./github-assets/ignite.png" alt="SMVDU IGNITE Logo" width="500">
-</p>
-
 <!-- Project Title -->
 <h1 align="center">SMVDU IGNITE</h1>
 
@@ -12,7 +7,6 @@
 <!-- Badges -->
 <p align="center">
   <img src="https://img.shields.io/badge/version-v1.0-blue.svg" alt="Version 1.0">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT">
 </p>
 
 <!-- GIF of Brand -->
