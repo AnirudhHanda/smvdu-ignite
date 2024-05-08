@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/dropdown-menu.jsx";
 import {Button} from "@/components/ui/button.jsx";
 import {PersonIcon} from "@radix-ui/react-icons";
+import {useNavigate} from "react-router-dom";
 
 const Navbar = () => {
+    const navigate = useNavigate();
     return (
         <div className="border-b py-4 px-5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-                <div className="wrap">
+                <div className="wrap" onClick={()=>navigate("/")}>
                     <img className="logoImage" src={logoImage} alt="Logo"/>
                     <div className="logoText">
                         <p className="smallName">SMVDU</p>

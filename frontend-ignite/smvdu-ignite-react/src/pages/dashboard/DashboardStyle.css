@@ -1,0 +1,204 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+    /*========== Colors ==========*/
+    /*Color mode HSL(hue, saturation, lightness)*/
+    --first-color: hsl(175, 55%, 40%);
+    --first-color-light: hsl(175, 30%, 48%);
+    --first-color-lighten: hsl(175, 40%, 62%);
+    --gradient-color: linear-gradient(180deg,
+    hsl(178, 35%, 45%),
+    hsl(178, 55%, 28%));
+    --title-color: hsl(175, 40%, 16%);
+    --text-color: hsl(175, 8%, 50%);
+    --white-color: #fff;
+
+    /*========== Font and typography ==========*/
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --h2-font-size: 2rem;
+    --normal-font-size: .938rem;
+    --smaller-font-size: .75rem;
+}
+
+/*=============== BASE ===============*/
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/*=============== CARD ===============*/
+.container1 {
+    height: 100vh;
+    margin-inline: 1.5rem;
+    display: grid;
+    place-items: center;
+}
+
+.card {
+    position: relative;
+    width: 290px;
+    background: var(--gradient-color);
+    border-radius: 1rem 1rem 11rem 11rem;
+    padding: 2.5rem 1.5rem 3.5rem;
+    text-align: center;
+    box-shadow: 0 8px 32px hsla(178, 55%, 20%, 0.15);
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+}
+
+
+.card:hover {
+    filter: drop-shadow(0 0 0.5em #ffffff);
+    outline: none;
+}
+.card__img1 {
+    width: 90px;
+}
+.card__border1 {
+    width: 90px;
+    height: 90px;
+    background-color: var(--first-color-light);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: grid;
+    place-items: center;
+}
+.card__perfil1 {
+    width: 80px;
+    height: 80px;
+    background-color: var(--first-color-lighten);
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.card__name1, .card__profession1 {
+    color: var(--white-color);
+}
+.card__name1 {
+    font-size: var(--h2-font-size);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.card__profession1 {
+    font-size: var(--smaller-font-size);
+    font-weight: 500;
+}
+
+/*=============== CARD INFO ===============*/
+.info1 {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    background-color: var(--white-color);
+    padding: 2.5rem 1.5rem 3.3rem;
+    border-radius: 1rem 1rem 11rem 11rem;
+    clip-path: circle(16px at 250px 40px);
+    transition: clip-path 0.4s ease-in-out;
+}
+.info__icon1 {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--first-color);
+    display: inline-flex;
+    padding: 0.25rem;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+.info__img1 {
+    width: 65px;
+}
+.info__border1 {
+    width: 64px;
+    height: 64px;
+    background-color: var(--first-color-light);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: grid;
+    place-items: center;
+    transform: translateX(-3rem);
+    transition: transform 0.8s;
+}
+.info__perfil1 {
+    width: 52px;
+    height: 52px;
+    background-color: var(--first-color-lighten);
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.info__data1 {
+    display: grid;
+    row-gap: 0.25rem;
+    margin-bottom: 1.5rem;
+    transform: translateX(-4rem);
+    transition: transform 1s;
+}
+.info__name1 {
+    font-size: var(--normal-font-size);
+    color: var(--title-color);
+}
+.info__profession1, .info__location1 {
+    font-size: var(--smaller-font-size);
+}
+.info__social1 {
+    display: flex;
+    justify-content: center;
+    column-gap: 1rem;
+    transform: translateX(-5rem);
+    transition: transform 1.2s;
+}
+.info__social-link1 {
+    width: 32px;
+    height: 32px;
+    background-color: var(--first-color-light);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    transition: transform 0.3s;
+}
+.info__social-link1:hover {
+    transform: translateY(-0.25rem);
+}
+.info__social-icon1 {
+    display: inline-flex;
+    background: var(--gradient-color);
+    padding: 0.25rem;
+    border-radius: 50%;
+    color: var(--white-color);
+    font-size: 1rem;
+}
+
+/* Card info animation */
+.info1:hover {
+    clip-path: circle(75%);
+}
+.info1:hover .info__icon1 {
+    opacity: 0;
+}
+.info1:hover .info__border1, .info1:hover .info__data1, .info1:hover .info__social1 {
+    transform: translateX(0);
+}

@@ -1,0 +1,4 @@
+.pdfImage {
+    width: 2.2rem;
+    height: auto; /* Ensure the aspect ratio is maintained */
+}

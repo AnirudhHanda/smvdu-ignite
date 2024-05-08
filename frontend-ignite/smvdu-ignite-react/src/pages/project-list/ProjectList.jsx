@@ -5,8 +5,13 @@ import ProjectCard from '@/pages/project/ProjectCard.jsx';
 import AddDepartmentPopup from './AddDepartmentPopup.jsx';
 import {Dialog, DialogContent, DialogHeader, DialogTrigger} from "@/components/ui/dialog.jsx";
 import CreateProjectForm from "@/pages/project/CreateProjectForm.jsx";
+import {Button} from "@/components/ui/button.jsx";
+import {useParams} from "react-router-dom";
 
 const ProjectList = () => {
+
+    const { option } = useParams();
+
     const [keyword, setKeyword] = useState('');
     const [showAddDepartment, setShowAddDepartment] = useState(false);
 
@@ -38,11 +43,12 @@ const ProjectList = () => {
 
                     <Dialog>
                         <DialogTrigger>
-                            <button
-                                className="flex items-center justify-center  mt-4 md:mt-0 ml-0 md:ml-4 px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            <Button
+                                variant="outline"
+                                className="flex items-center justify-center  mt-4 md:mt-0 ml-0 md:ml-4 px-4 py-2  text-base font-medium rounded-md text-white hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 <PlusIcon className="w-6 h-6"/>
-                            </button>
+                            </Button>
                         </DialogTrigger>
 
                         <DialogContent>
@@ -58,7 +64,7 @@ const ProjectList = () => {
             <div className="mx-auto max-w-5xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {Array.from({length: keyword ? 3 : 4}).map((_, index) => (
-                        <ProjectCard key={index}/>
+                        <ProjectCard option={option} key={index}/>
                     ))}
                 </div>
             </div>
