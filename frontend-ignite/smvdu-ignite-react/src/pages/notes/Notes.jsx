@@ -4,8 +4,10 @@ import NotesList from "@/pages/notes/NotesList.jsx";
 import {Button} from "@/components/ui/button.jsx";
 import {PlusIcon} from "@radix-ui/react-icons";
 import CreateNoteForm from "@/pages/notes/CreateNoteForm.jsx";
+import {useParams} from "react-router-dom";
 
 const Notes = () => {
+    const {departmentId, courseId} = useParams();
     return (
         <>
             <div className="container mx-auto px-5 lg:px-0 py-5">

@@ -21,7 +21,7 @@ const CourseCard = ({option}) => {
     return (
         <Card
             // onClick={()=>navigate("/course/notes/3")}
-            onClick={()=>navigate(`/course/3/${option}/3`)}
+            onClick={()=>navigate(`/course/1/${option}/3`)}
             className={`card2 p-8 w-full lg:max-w-4xl flex flex-col justify-center items-center transition-all duration-500 ease-in-out ${
                 isHovered ? 'shadow-white-lg scale-110 bg-blue-500 cursor-pointer' : 'shadow-lg bg-white cursor-pointer'
             }`}
