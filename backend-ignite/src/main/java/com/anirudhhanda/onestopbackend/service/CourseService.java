@@ -3,6 +3,7 @@ package com.anirudhhanda.onestopbackend.service;
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
 import com.anirudhhanda.onestopbackend.modal.Course;
 import com.anirudhhanda.onestopbackend.request.CourseRequest;
+import com.anirudhhanda.onestopbackend.response.CResponse;
 import com.anirudhhanda.onestopbackend.response.MessageResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -19,4 +20,5 @@ public interface CourseService {
     void deleteCourse(Long subId, Long userId) throws Exception;
 
 
+    CResponse serachCourses(String keyword, Long departmentId) throws Exception;
 }

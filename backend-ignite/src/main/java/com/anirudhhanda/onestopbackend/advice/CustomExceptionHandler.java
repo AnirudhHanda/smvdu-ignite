@@ -1,7 +1,9 @@
 package com.anirudhhanda.onestopbackend.advice;
 
+import com.anirudhhanda.onestopbackend.exceptions.AccessDeniedExceptionAdmin;
 import com.anirudhhanda.onestopbackend.exceptions.DuplicateCourseException;
 import com.anirudhhanda.onestopbackend.exceptions.DuplicateDepartmentException;
+import com.anirudhhanda.onestopbackend.exceptions.ExceedException;
 import com.anirudhhanda.onestopbackend.response.ErrorResponseMine;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
@@ -67,6 +69,18 @@ public class CustomExceptionHandler {
             errorDetail = ProblemDetail
                     .forStatusAndDetail(HttpStatusCode.valueOf(400), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "duplicate course");
+        }
+
+        if(ex instanceof ExceedException){
+            errorDetail = ProblemDetail
+                    .forStatusAndDetail(HttpStatusCode.valueOf(400), ex.getMessage());
+            errorDetail.setProperty("reason", "exceeded upload limit");
+        }
+
+        if(ex instanceof AccessDeniedExceptionAdmin){
+            errorDetail = ProblemDetail
+                    .forStatusAndDetail(HttpStatusCode.valueOf(400), ex.getMessage());
+            errorDetail.setProperty("reason", "not an Admin");
         }
 
         ErrorResponseMine errRes = new ErrorResponseMine();

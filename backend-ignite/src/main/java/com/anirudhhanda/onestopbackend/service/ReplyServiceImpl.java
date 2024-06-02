@@ -3,6 +3,7 @@ package com.anirudhhanda.onestopbackend.service;
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
 import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
 import com.anirudhhanda.onestopbackend.appuser.AppUserRole;
+import com.anirudhhanda.onestopbackend.exceptions.AccessDeniedExceptionAdmin;
 import com.anirudhhanda.onestopbackend.modal.Question;
 import com.anirudhhanda.onestopbackend.modal.Reply;
 import com.anirudhhanda.onestopbackend.repository.QuestionRepository;
@@ -70,7 +71,7 @@ public class ReplyServiceImpl implements ReplyService {
         AppUser user = userOptional.get();
 
         if (!user.getAppUserRole().equals(AppUserRole.ADMIN)) {
-            throw new AccessDeniedException("Only ADMIN users can delete departments.");
+            throw new AccessDeniedExceptionAdmin("Only ADMIN can delete replies...");
         }
 
         replyRepository.delete(reply);

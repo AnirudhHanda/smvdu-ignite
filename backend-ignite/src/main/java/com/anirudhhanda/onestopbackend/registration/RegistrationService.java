@@ -33,7 +33,7 @@ public class RegistrationService {
      * @param request Registration request containing user details.
      * @return ResponseEntity containing registration response.
      */
-    public ResponseEntity<AuthResponse> register(RegistrationRequest request) {
+    public ResponseEntity<AuthResponse> register(RegistrationRequest request) throws Exception{
         boolean isValidEmail = emailValidator.test(request.getEmail());
 
         if (!isValidEmail) {
@@ -68,7 +68,7 @@ public class RegistrationService {
      * @param request Registration request containing admin details.
      * @return ResponseEntity containing registration response.
      */
-    public ResponseEntity<AuthResponse> registerAdmin(RegistrationRequest request) {
+    public ResponseEntity<AuthResponse> registerAdmin(RegistrationRequest request) throws Exception{
         boolean isValidEmail = emailValidator.test(request.getEmail());
 
         if (!isValidEmail) {

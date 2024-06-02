@@ -1,12 +1,13 @@
 package com.anirudhhanda.onestopbackend.controller;
 
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
+import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
 import com.anirudhhanda.onestopbackend.dto.CourseDTO;
+import com.anirudhhanda.onestopbackend.exceptions.ExceedException;
 import com.anirudhhanda.onestopbackend.modal.Course;
 import com.anirudhhanda.onestopbackend.request.CourseRequest;
-import com.anirudhhanda.onestopbackend.response.CourseListResponse;
-import com.anirudhhanda.onestopbackend.response.CourseResponse;
-import com.anirudhhanda.onestopbackend.response.MessageResponse;
+import com.anirudhhanda.onestopbackend.response.*;
+import com.anirudhhanda.onestopbackend.service.AccessLogService;
 import com.anirudhhanda.onestopbackend.service.CourseService;
 import com.anirudhhanda.onestopbackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,9 @@ public class CourseController {
     private final CourseService courseService;
     private final UserService userService;
 
+    private AccessLogService accessLogService;
+
+    private AppUserRepository appUserRepository;
     @GetMapping("/{courseId}")
     public ResponseEntity<CourseResponse> getCourseById(@PathVariable Long courseId) throws Exception {
         Course course = courseService.getCourseById(courseId);
@@ -51,6 +55,18 @@ public class CourseController {
 
         AppUser tokenUser = userService.findUserProfileByJwt(token);
         AppUser user = userService.findUserById(tokenUser.getId());
+
+        // Log the access attempt
+        accessLogService.logAccess(user);
+        appUserRepository.save(user);
+
+        // Check the number of accesses in the last 24 hours
+        int accessCount = accessLogService.countRecentAccesses(user, 24);
+
+        if (accessCount > 8) {
+            // Handle the case where the user has accessed too many times
+            throw new ExceedException("Exceeded upload limit, can only upload 6 items per day...");
+        }
 
         if(user != null){
             Course createdCourse = courseService.createCourse(course, user);
@@ -81,5 +97,21 @@ public class CourseController {
         res.setMessage("Deleted course successfully");
         res.setSuccess(true);
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CResponse> searchCourses(
+            @RequestParam Long departmentId,
+            @RequestParam String keyword
+//            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        System.out.println("Search Controller called: ");
+        CResponse courses = courseService.serachCourses(keyword, departmentId);
+//        // message to be displayed if no department available
+//        if (courses.size() == 0) {
+//            return ResponseEntity.noContent().build();
+//        }
+
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 }

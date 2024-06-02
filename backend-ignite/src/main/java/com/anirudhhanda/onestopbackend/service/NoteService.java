@@ -8,6 +8,7 @@ import com.amazonaws.util.IOUtils;
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
 import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
 import com.anirudhhanda.onestopbackend.appuser.AppUserRole;
+import com.anirudhhanda.onestopbackend.exceptions.AccessDeniedExceptionAdmin;
 import com.anirudhhanda.onestopbackend.exceptions.DuplicateCourseException;
 import com.anirudhhanda.onestopbackend.modal.Course;
 import com.anirudhhanda.onestopbackend.modal.Note;
@@ -98,6 +99,7 @@ public class NoteService {
 
         createdNote.setUploadedBy(user);
         createdNote.setFileName(fileNameDb);
+        createdNote.setDbName(fileName);
         createdNote.setCourse(course);
         createdNote.setUploadDateTime(LocalDateTime.now());
         createdNote.setDownloadUrl("http://localhost:8080/api/v1/notes/download/"+fileName);
@@ -164,7 +166,7 @@ public class NoteService {
         AppUser user = userOptional.get();
 
         if (!user.getAppUserRole().equals(AppUserRole.ADMIN)) {
-            throw new Exception("Only ADMIN users can delete Notes.");
+            throw new AccessDeniedExceptionAdmin("Only ADMIN can delete Notes...");
         }
 
         noteRepository.delete(note);

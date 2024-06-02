@@ -15,6 +15,7 @@ public class Note {
     private Long id;
 
     private String fileName;
+    private String DbName;
     private String downloadUrl;
     private LocalDateTime uploadDateTime;
 

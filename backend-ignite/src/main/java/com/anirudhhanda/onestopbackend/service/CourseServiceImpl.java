@@ -8,10 +8,13 @@ import com.anirudhhanda.onestopbackend.modal.Course;
 import com.anirudhhanda.onestopbackend.modal.Department;
 import com.anirudhhanda.onestopbackend.repository.CourseRepository;
 import com.anirudhhanda.onestopbackend.request.CourseRequest;
+import com.anirudhhanda.onestopbackend.response.CResponse;
+import com.anirudhhanda.onestopbackend.response.CResponseMaterial;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,5 +70,38 @@ public class CourseServiceImpl implements CourseService {
         }
 
         courseRepository.deleteById(subId);
+    }
+
+    @Override
+    public CResponse serachCourses(String keyword, Long departmentId) throws Exception {
+        System.out.println("Search method called ----Keyword: " + keyword + " -----DeptId: " + departmentId);
+        keyword = keyword.toLowerCase();
+        List<String> courses = courseRepository.findByDepartmentIdandKeyword(departmentId, keyword);
+
+        List<CResponseMaterial> cResMatList = new ArrayList<>();
+
+
+        for (String course : courses) {
+            System.out.println("String found: "+course);
+            String[] parts = course.split(",");
+            String courseName = parts[0];
+            Long id = Long.parseLong(parts[1]);
+
+            System.out.println("Name: "+courseName);
+            System.out.println("ID: "+id);
+
+            CResponseMaterial cResMat = new CResponseMaterial();
+            cResMat.setName(courseName);
+            cResMat.setId(id);
+
+            cResMatList.add(cResMat);
+        }
+
+        CResponse cRes = new CResponse();
+        cRes.setSuccess(true);
+        cRes.setCourses(cResMatList);
+
+        System.out.println("Courses found: " + cResMatList);
+        return cRes;
     }
 }

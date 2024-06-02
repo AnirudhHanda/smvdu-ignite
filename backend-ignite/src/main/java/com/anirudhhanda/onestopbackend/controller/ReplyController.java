@@ -1,12 +1,15 @@
 package com.anirudhhanda.onestopbackend.controller;
 
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
+import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
 import com.anirudhhanda.onestopbackend.appuser.AppUserService;
+import com.anirudhhanda.onestopbackend.exceptions.ExceedException;
 import com.anirudhhanda.onestopbackend.modal.Reply;
 import com.anirudhhanda.onestopbackend.request.ReplyRequest;
 import com.anirudhhanda.onestopbackend.response.MessageResponse;
 import com.anirudhhanda.onestopbackend.response.ReplyListResponse;
 import com.anirudhhanda.onestopbackend.response.ReplyResponse;
+import com.anirudhhanda.onestopbackend.service.AccessLogService;
 import com.anirudhhanda.onestopbackend.service.ReplyService;
 import com.anirudhhanda.onestopbackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -24,6 +27,10 @@ public class ReplyController {
     private final ReplyService replyService;
     private final UserService userService;
 
+    private AccessLogService accessLogService;
+
+    private AppUserRepository appUserRepository;
+
 
     @PostMapping("/upload")
     public ResponseEntity<ReplyResponse> createReply(
@@ -31,6 +38,19 @@ public class ReplyController {
             @RequestHeader("Authorization") String token
     ) throws Exception{
         AppUser user = userService.findUserProfileByJwt(token);
+
+        // Log the access attempt
+        accessLogService.logAccess(user);
+        appUserRepository.save(user);
+
+        // Check the number of accesses in the last 24 hours
+        int accessCount = accessLogService.countRecentAccesses(user, 24);
+
+        if (accessCount > 8) {
+            // Handle the case where the user has accessed too many times
+            throw new ExceedException("Exceeded upload limit, can only upload 6 items per day...");
+        }
+
         Reply createdReply = replyService.createReply(replyRequest.getQuestionId(), user.getId(), replyRequest.getName());
         ReplyResponse res = new ReplyResponse();
         res.setSuccess(true);

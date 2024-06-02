@@ -13,4 +13,8 @@ import java.util.List;
 public class CourseListResponse {
     private boolean susccess;
     private List<Course> courses;
+
+    public void setSuccess(boolean b) {
+        this.susccess = b;
+    }
 }

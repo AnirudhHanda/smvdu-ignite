@@ -3,6 +3,7 @@ package com.anirudhhanda.onestopbackend.service;
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
 import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
 import com.anirudhhanda.onestopbackend.appuser.AppUserRole;
+import com.anirudhhanda.onestopbackend.exceptions.AccessDeniedExceptionAdmin;
 import com.anirudhhanda.onestopbackend.modal.Question;
 import com.anirudhhanda.onestopbackend.modal.Reply;
 import com.anirudhhanda.onestopbackend.repository.QuestionRepository;
@@ -36,6 +37,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void deleteQuestion(Long questionId, Long userId) throws Exception {
+        System.out.println("Delete question method called");
         Optional<Question> questionOptional = questionRepository.findById(questionId);
         Optional<AppUser> userOptional = appUserRepository.findById(userId);
 
@@ -45,14 +47,17 @@ public class QuestionServiceImpl implements QuestionService {
         if(userOptional.isEmpty()){
             throw new Exception("user not found with id: "+userId);
         }
-
+        System.out.println("Crossed excpetions");
         Question question = questionOptional.get();
         AppUser user = userOptional.get();
 
+        System.out.println("Question to be deleted: "+question);
+        System.out.println("User found: "+user);
         if (!user.getAppUserRole().equals(AppUserRole.ADMIN)) {
-            throw new AccessDeniedException("Only ADMIN users can delete departments.");
+            throw new AccessDeniedExceptionAdmin("Only ADMIN can delete Questions...");
         }
 
+        System.out.println("deleted successfully");
         questionRepository.delete(question);
     }
 

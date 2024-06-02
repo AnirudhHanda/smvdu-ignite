@@ -1,10 +1,13 @@
 package com.anirudhhanda.onestopbackend.controller;
 
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
+import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
+import com.anirudhhanda.onestopbackend.exceptions.ExceedException;
 import com.anirudhhanda.onestopbackend.modal.Pyq;
 import com.anirudhhanda.onestopbackend.response.MessageResponse;
 import com.anirudhhanda.onestopbackend.response.PyqListResponse;
 import com.anirudhhanda.onestopbackend.response.PyqResponse;
+import com.anirudhhanda.onestopbackend.service.AccessLogService;
 import com.anirudhhanda.onestopbackend.service.PyqService;
 import com.anirudhhanda.onestopbackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,6 +25,9 @@ import java.util.List;
 public class PyqController {
     private PyqService pyqService;
     private final UserService userService;
+    private AccessLogService accessLogService;
+
+    private AppUserRepository appUserRepository;
 
     @PostMapping("/upload")
     public ResponseEntity<PyqResponse> uploadFile(
@@ -30,6 +36,17 @@ public class PyqController {
             @RequestHeader("Authorization") String token
     ) throws Exception {
         AppUser user = userService.findUserProfileByJwt(token);
+        // Log the access attempt
+        accessLogService.logAccess(user);
+        appUserRepository.save(user);
+
+        // Check the number of accesses in the last 24 hours
+        int accessCount = accessLogService.countRecentAccesses(user, 24);
+
+        if (accessCount > 8) {
+            // Handle the case where the user has accessed too many times
+            throw new ExceedException("Exceeded upload limit, can only upload 6 items per day...");
+        }
         Pyq createdPyq = pyqService.uploadFileIn(file, courseId, user.getId());
         PyqResponse res = new PyqResponse();
         res.setSuccess(true);
@@ -57,6 +74,7 @@ public class PyqController {
             @RequestParam(value = "pyqId") Long pyqId,
             @RequestHeader("Authorization") String token
     ) throws Exception {
+        System.out.println("Called pyq delete controller");
         AppUser user = userService.findUserProfileByJwt(token);
         String str = pyqService.deleteFile(fileName, user.getId(), pyqId);
         MessageResponse res = new MessageResponse();

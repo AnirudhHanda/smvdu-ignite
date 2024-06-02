@@ -1,5 +1,6 @@
 package com.anirudhhanda.onestopbackend.service;
 
+import com.anirudhhanda.onestopbackend.exceptions.AccessDeniedExceptionAdmin;
 import com.anirudhhanda.onestopbackend.exceptions.DuplicateCourseException;
 import com.anirudhhanda.onestopbackend.modal.Pyq;
 import com.anirudhhanda.onestopbackend.repository.PyqRepository;
@@ -84,6 +85,7 @@ public class PyqService {
 
         createdPyq.setUploadedBy(user);
         createdPyq.setFileName(fileNameDb);
+        createdPyq.setDbName(fileName);
         createdPyq.setCourse(course);
         createdPyq.setUploadDateTime(LocalDateTime.now());
         createdPyq.setDownloadUrl("http://localhost:8080/api/v1/notes/download/"+fileName);
@@ -112,8 +114,9 @@ public class PyqService {
     }
 
     public String deleteFile(String fileName, Long userId, Long noteId) throws Exception {
+        System.out.println("Called deleteFileMethod");
         s3Client.deleteObject(bucketName, fileName);
-
+        System.out.println("Deleted from aws");
         Optional<Pyq> pyqOptional = pyqRepository.findById(noteId);
         Optional<AppUser> userOptional = appUserRepository.findById(userId);
 
@@ -124,13 +127,14 @@ public class PyqService {
             throw new Exception("user not found with id: "+userId);
         }
 
+
         Pyq pyq = pyqOptional.get();
         AppUser user = userOptional.get();
-
+        System.out.println("Passed tests");
         if (!user.getAppUserRole().equals(AppUserRole.ADMIN)) {
-            throw new AccessDeniedException("Only ADMIN users can delete Pyqs.");
+            throw new AccessDeniedExceptionAdmin("Only ADMIN can delete Pyqs...");
         }
-
+        System.out.println("Deleted");
         pyqRepository.delete(pyq);
         return fileName + " removed ...";
     }

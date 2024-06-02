@@ -1,10 +1,11 @@
 package com.anirudhhanda.onestopbackend.controller;
 
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
+import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
+import com.anirudhhanda.onestopbackend.exceptions.ExceedException;
 import com.anirudhhanda.onestopbackend.modal.Department;
-import com.anirudhhanda.onestopbackend.response.DepartmentListResponse;
-import com.anirudhhanda.onestopbackend.response.DepartmentResponse;
-import com.anirudhhanda.onestopbackend.response.MessageResponse;
+import com.anirudhhanda.onestopbackend.response.*;
+import com.anirudhhanda.onestopbackend.service.AccessLogService;
 import com.anirudhhanda.onestopbackend.service.DepartmentService;
 import com.anirudhhanda.onestopbackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,10 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     private final UserService userService;
+
+    private AccessLogService accessLogService;
+
+    private AppUserRepository appUserRepository;
 
     @GetMapping
     public ResponseEntity<DepartmentListResponse> getAllDepartments(
@@ -61,6 +66,17 @@ public class DepartmentController {
             @RequestHeader("Authorization") String jwt
     ) throws Exception {
         AppUser user = userService.findUserProfileByJwt(jwt);
+        // Log the access attempt
+        accessLogService.logAccess(user);
+        appUserRepository.save(user);
+
+        // Check the number of accesses in the last 24 hours
+        int accessCount = accessLogService.countRecentAccesses(user, 24);
+
+        if (accessCount > 8) {
+            // Handle the case where the user has accessed too many times
+            throw new ExceedException("Exceeded upload limit, can only upload 6 items per day...");
+        }
         Department createdDepartment = departmentService.createDepartment(department, user);
 
         DepartmentResponse res = new DepartmentResponse();
@@ -98,21 +114,22 @@ public class DepartmentController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<DepartmentListResponse> searchDepartments(
+    public ResponseEntity<DResponse> searchDepartments(
             @RequestParam(required = false) String keyword
 //            @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        List<Department> departments = departmentService.serachDepartments(keyword);
+        System.out.println("search controller called");
+        DResponse departments = departmentService.serachDepartments(keyword);
         // message to be displayed if no department available
-        if (departments.size() == 0) {
-            return ResponseEntity.noContent().build();
-        }
+//        if (departments.size() == 0) {
+//            return ResponseEntity.noContent().build();
+//        }
 
-        DepartmentListResponse res = new DepartmentListResponse();
-        res.setSuccess(true);
-        res.setDepartments(departments);
+//        DepartmentListResponse res = new DepartmentListResponse();
+//        res.setSuccess(true);
+//        res.setDepartments(departments);
 
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(departments, HttpStatus.OK);
     }
 
     // ig controller completed

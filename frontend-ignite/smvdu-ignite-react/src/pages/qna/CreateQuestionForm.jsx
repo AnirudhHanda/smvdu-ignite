@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form.jsx';
 import { Input } from '@/components/ui/input.jsx';
 import { Button } from '@/components/ui/button.jsx';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { createQuestion } from '@/redux/question/Action';
+import { getUser } from '@/redux/auth/Action';
 
 const CreateQuestionForm = () => {
+    const dispatch = useDispatch();
     const form = useForm({
         defaultValues: {
             name: '',
         },
     });
 
+    const { auth } = useSelector(store => store);
+    useEffect(() => {
+        dispatch(getUser());
+    }, [auth.jwt, dispatch]);
+
     const onSubmit = (data) => {
+        dispatch(createQuestion(data));
         console.log('create Question data: ', data);
+        form.reset();
     };
 
     return (
@@ -24,13 +35,21 @@ const CreateQuestionForm = () => {
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
                     <Avatar>
-                        <AvatarFallback>A</AvatarFallback>
+                        <AvatarFallback>{auth.user.firstName ? auth.user.firstName[0] : 'U'}</AvatarFallback>
                     </Avatar>
 
                     <FormField
                         control={form.control}
                         name="name"
-                        render={({ field }) => (
+                        rules={{
+                            required: "Question is required",
+                            minLength: {
+                                value: 10,
+                                message: "Question must be at least 10 characters long"
+                            },
+                            validate: value => value.trim() !== '' || "Question cannot be empty"
+                        }}
+                        render={({ field, fieldState: { error } }) => (
                             <FormItem className="flex-1">
                                 <FormControl>
                                     <Input
@@ -40,7 +59,7 @@ const CreateQuestionForm = () => {
                                         placeholder="Ask a question..."
                                     />
                                 </FormControl>
-                                <FormMessage />
+                                {error && <FormMessage>{error.message}</FormMessage>}
                             </FormItem>
                         )}
                     />

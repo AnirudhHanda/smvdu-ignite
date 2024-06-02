@@ -3,6 +3,7 @@ package com.anirudhhanda.onestopbackend.service;
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
 import com.anirudhhanda.onestopbackend.exceptions.DuplicateDepartmentException;
 import com.anirudhhanda.onestopbackend.modal.Department;
+import com.anirudhhanda.onestopbackend.response.DResponse;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface DepartmentService {
 
     void deleteDepartment(Long departmentId, Long userid) throws Exception;
 
-    List<Department> serachDepartments(String keyword) throws Exception;
+    DResponse serachDepartments(String keyword) throws Exception;
 }

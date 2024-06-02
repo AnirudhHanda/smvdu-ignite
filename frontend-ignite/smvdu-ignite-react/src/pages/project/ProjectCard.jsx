@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card.jsx';
 import './ProjectCard.css';
 import {useNavigate} from "react-router-dom";
 
-const ProjectCard = ({option}) => {
+const ProjectCard = ({option, item}) => {
     const isNotesOption = option === 'notes'; // Check if the selected option is "notes"
     const isPyqsOption = option === 'pyqs'; // Check if the selected option is "pyqs"
 
@@ -16,8 +16,10 @@ const ProjectCard = ({option}) => {
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
-
+    console.log("I am project card");
     const navigate = useNavigate();
+
+    console.log("item: ", item);
 
     return (
         <Card
@@ -26,14 +28,14 @@ const ProjectCard = ({option}) => {
             }`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            onClick={() => navigate(`/department/courses/${option}/3`)}
+            onClick={() => navigate(`/department/courses/${option}/${item.id}/${item.name}`)}
         >
             <h2 className={`text-xl font-semibold mb-4 ${
                 isHovered ? 'text-white' : 'text-gray-700'
             } transition-colors duration-500`}
-                onClick={() => navigate(`/department/courses/${option}/3`)}
+                
             >
-                Department Name
+                {item.name}
             </h2>
         </Card>
     );

@@ -56,4 +56,11 @@
     filter: drop-shadow(0 0 2em #ffffff);
 }
 
+.about{
+    font-size: large;
+    font-weight: 500;
+}
+.about:hover{
+    text-shadow: 0px 0px 10px white;
+}
 

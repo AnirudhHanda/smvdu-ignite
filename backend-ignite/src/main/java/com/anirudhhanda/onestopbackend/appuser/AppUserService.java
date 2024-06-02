@@ -7,6 +7,7 @@ import com.anirudhhanda.onestopbackend.registration.token.ConfirmationToken;
 import com.anirudhhanda.onestopbackend.registration.token.ConfirmationTokenService;
 import com.anirudhhanda.onestopbackend.response.AuthResponse;
 import com.anirudhhanda.onestopbackend.security.config.JwtProvider;
+import com.anirudhhanda.onestopbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +35,8 @@ public class AppUserService implements UserDetailsService {
     private final PasswordValidator passwordValidator;
     private final NameValidator nameValidator;
 
+    private final UserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
@@ -42,7 +45,7 @@ public class AppUserService implements UserDetailsService {
 
     }
 
-    public AuthResponse signUpUser(AppUser appUser) throws IllegalStateException {
+    public AuthResponse signUpUser(AppUser appUser) throws Exception {
         // checking if the user exists
         Optional<AppUser> appUserOptional = appUserRepository.findByEmail(appUser.getEmail());
         boolean userExists = appUserOptional.isPresent();
@@ -74,9 +77,12 @@ public class AppUserService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = JwtProvider.generateToken(authentication);
 
+        System.out.println("Till that point");
+//        AppUser user = userService.findUserProfileByJwt(jwt);
         AuthResponse res = new AuthResponse();
         res.setMessage("Sign up successful");
         res.setJwt(jwt);
+        res.setUser(appUser);
 
         // TODO: Send confirmation token
         String token = UUID.randomUUID().toString();
@@ -97,7 +103,7 @@ public class AppUserService implements UserDetailsService {
         // TODO: send the email
         return res;
     }
-    public AuthResponse signUpAdmin(AppUser appUser) throws IllegalStateException {
+    public AuthResponse signUpAdmin(AppUser appUser) throws Exception {
         // checking if the user exists
         Optional<AppUser> appUserOptional = appUserRepository.findByEmail(appUser.getEmail());
         boolean userExists = appUserOptional.isPresent();
@@ -132,9 +138,11 @@ public class AppUserService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = JwtProvider.generateToken(authentication);
 
+//        AppUser user = userService.findUserProfileByJwt(jwt);
         AuthResponse res = new AuthResponse();
         res.setMessage("Sign up successful");
         res.setJwt(jwt);
+        res.setUser(appUser);
 
         // TODO: Send confirmation token
         String token = UUID.randomUUID().toString();
@@ -180,9 +188,11 @@ public class AppUserService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = JwtProvider.generateToken(authentication);
 
+        AppUser appUser = (AppUser) userDetails;
         AuthResponse res = new AuthResponse();
         res.setMessage("Login successful");
         res.setJwt(jwt);
+        res.setUser(appUser);
 
         return res;
     }

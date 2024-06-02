@@ -1,10 +1,13 @@
 package com.anirudhhanda.onestopbackend.controller;
 
 import com.anirudhhanda.onestopbackend.appuser.AppUser;
+import com.anirudhhanda.onestopbackend.appuser.AppUserRepository;
+import com.anirudhhanda.onestopbackend.exceptions.ExceedException;
 import com.anirudhhanda.onestopbackend.modal.Note;
 import com.anirudhhanda.onestopbackend.response.MessageResponse;
 import com.anirudhhanda.onestopbackend.response.NoteListResponse;
 import com.anirudhhanda.onestopbackend.response.NoteResponse;
+import com.anirudhhanda.onestopbackend.service.AccessLogService;
 import com.anirudhhanda.onestopbackend.service.NoteService;
 import com.anirudhhanda.onestopbackend.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,6 +25,9 @@ import java.util.List;
 public class NoteController {
     private NoteService noteService;
     private final UserService userService;
+    private AccessLogService accessLogService;
+
+    private AppUserRepository appUserRepository;
 
     @PostMapping("/upload")
     public ResponseEntity<NoteResponse> uploadFile(
@@ -30,6 +36,17 @@ public class NoteController {
             @RequestHeader("Authorization") String token
     ) throws Exception {
         AppUser user = userService.findUserProfileByJwt(token);
+        // Log the access attempt
+        accessLogService.logAccess(user);
+        appUserRepository.save(user);
+
+        // Check the number of accesses in the last 24 hours
+        int accessCount = accessLogService.countRecentAccesses(user, 24);
+
+        if (accessCount > 8) {
+            // Handle the case where the user has accessed too many times
+            throw new ExceedException("Exceeded upload limit, can only upload 6 items per day...");
+        }
         Note createdNote = noteService.uploadFileIn(file, courseId, user.getId());
         NoteResponse noteResponse = new NoteResponse();
         noteResponse.setNote(createdNote);

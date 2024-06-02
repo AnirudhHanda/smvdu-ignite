@@ -2,22 +2,23 @@ package com.anirudhhanda.onestopbackend.appuser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@Data
 public class AppUser implements UserDetails {
 
     @Id
@@ -42,6 +43,9 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
     private Boolean locked = false;
     private Boolean enabled = false;
+
+    @ElementCollection
+    private List<LocalDateTime> accessTimestamps = new ArrayList<>();
 
     public AppUser(String firstName,
                    String lastName,
@@ -98,5 +102,17 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public List<LocalDateTime> getAccessTimestamps() {
+        return accessTimestamps;
+    }
+
+    public void setAccessTimestamps(List<LocalDateTime> accessTimestamps) {
+        this.accessTimestamps = accessTimestamps;
+    }
+
+    public void addAccessTimestamp(LocalDateTime timestamp) {
+        this.accessTimestamps.add(timestamp);
     }
 }

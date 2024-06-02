@@ -6,10 +6,15 @@ import com.anirudhhanda.onestopbackend.appuser.AppUserRole;
 import com.anirudhhanda.onestopbackend.exceptions.DuplicateDepartmentException;
 import com.anirudhhanda.onestopbackend.modal.Department;
 import com.anirudhhanda.onestopbackend.repository.DepartmentRepository;
+import com.anirudhhanda.onestopbackend.response.CResponse;
+import com.anirudhhanda.onestopbackend.response.CResponseMaterial;
+import com.anirudhhanda.onestopbackend.response.DResponse;
+import com.anirudhhanda.onestopbackend.response.DResponseMaterial;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,9 +79,34 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
-    public List<Department> serachDepartments(String keyword) throws Exception {
-        List<Department> departments = departmentRepository.findByNameContaining(keyword);
+    public DResponse serachDepartments(String keyword) throws Exception {
+        System.out.println("Serach function called");
+        keyword = keyword.toLowerCase();
+        List<String> departments = departmentRepository.findByNameContainingString(keyword);
+
+        List<DResponseMaterial> dResMatList = new ArrayList<>();
+
+        for (String department : departments) {
+            System.out.println("String found: "+department);
+            String[] parts = department.split(",");
+            String departmentName = parts[0];
+            Long id = Long.parseLong(parts[1]);
+
+            System.out.println("Name: "+departmentName);
+            System.out.println("ID: "+id);
+
+            DResponseMaterial dResMat = new DResponseMaterial();
+            dResMat.setName(departmentName);
+            dResMat.setId(id);
+
+            dResMatList.add(dResMat);
+        }
+
+        DResponse dRes = new DResponse();
+        dRes.setSuccess(true);
+        dRes.setCourses(dResMatList);
+
         System.out.println("Departments found: "+departments);
-        return departments;
+        return dRes;
     }
 }

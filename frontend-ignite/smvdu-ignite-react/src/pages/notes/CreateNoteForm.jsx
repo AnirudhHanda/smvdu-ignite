@@ -4,12 +4,18 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { DialogClose } from "@/components/ui/dialog.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { createNote } from '@/redux/notes/Action';
 
-const CreateNoteForm = () => {
-    const [isDropped, setDropped] = useState(false); // Set initial value to false
-    const [droppedFileName, setDroppedFileName] = useState(""); // Define droppedFileName state
+const CreateNoteForm = ({ option, courseId }) => {
+    const dispatch = useDispatch();
+    const [isDropped, setDropped] = useState(false);
+    const [droppedFileName, setDroppedFileName] = useState("");
     const [acceptedFiles, setAcceptedFiles] = useState([]);
     const [promptText, setPromptText] = useState("Drag 'n' drop some files here, or click to select files");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false); // Loading state
 
     const form = useForm({
         defaultValues: {
@@ -17,34 +23,58 @@ const CreateNoteForm = () => {
         }
     });
 
+    console.log("Option: ", option);
+
     const onSubmit = async () => {
         if (acceptedFiles.length === 0) {
-            console.log("No file selected");
+            setErrorMessage("No file selected");
+            setTimeout(() => {
+                setErrorMessage(""); // Clear the error message after 5 seconds
+            }, 5000);
             return;
         }
 
+        setLoading(true); // Start loading
+
         const formData = new FormData();
-        formData.append("courseId", 1); // Assuming courseId is defined somewhere in your code
+        formData.append("courseId", courseId);
         formData.append("file", acceptedFiles[0]);
 
-        const token = "Bearer " +
-            "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTUxOTYyNzksImV4cCI6MTcxNTI4MjY3OSwiZW1haWwiOiIyMWJjczAxNEBzbXZkdS5hYy5pbiJ9.R5luSltCPMRY0gDlje0PUPkOKa1SYCTfI3WYcNA_5z8cDw7y-Y2nUOGWsTg-Ows_FyraUEDW6QnzTffd75Ty8w"; // Replace "your_token_here" with the actual token
-        const headers = new Headers();
-        headers.append("Authorization", token);
+        dispatch(createNote(option, formData));
+        // const token = "Bearer " + localStorage.getItem('jwt');
+        // const headers = new Headers();
+        // headers.append("Authorization", token);
 
-        const requestOptions = {
-            method: "POST",
-            headers: headers,
-            body: formData,
-        };
+        // const requestOptions = {
+        //     method: "POST",
+        //     headers: headers,
+        //     body: formData,
+        // };
 
-        try {
-            const response = await fetch("http://localhost:8080/api/v1/notes/upload", requestOptions);
-            const results = await response.json();
-            console.log("results: ", results);
-        } catch (error) {
-            console.error("Error uploading file:", error);
-        }
+        // try {
+        //     const response = await fetch(`http://localhost:8080/api/v1/${option}/upload`, requestOptions);
+        //     if (!response.ok) {
+        //         throw new Error("File upload failed");
+        //     }
+        //     const results = await response.json();
+        //     console.log("results: ", results);
+        //     setSuccessMessage("File uploaded successfully!");
+        //     setErrorMessage(""); // Clear any previous error messages
+        //     setTimeout(() => {
+        //         setSuccessMessage(""); // Clear the success message after 5 seconds
+        //     }, 5000);
+        //     setTimeout(() => {
+        //         window.location.reload(); // Reload the page after 5 seconds
+        //     }, 5000);
+        // } catch (error) {
+        //     console.error("Error uploading file:", error);
+        //     setErrorMessage("Error uploading file");
+        //     setTimeout(() => {
+        //         setErrorMessage(""); // Clear the error message after 5 seconds
+        //     }, 5000);
+        // } finally {
+        //     setLoading(false); // End loading
+        // }
     };
 
     const onDrop = useCallback(acceptedFiles => {
@@ -53,10 +83,11 @@ const CreateNoteForm = () => {
             const fileType = droppedFile.name.split('.').pop();
             if (fileType !== 'pdf') {
                 setPromptText("Please upload a PDF file.");
+                setErrorMessage("Please upload a PDF file.");
                 return;
             }
-            setDropped(true); // Set isDropped to true
-            setDroppedFileName(droppedFile.name); // Set the droppedFileName
+            setDropped(true);
+            setDroppedFileName(droppedFile.name);
             setAcceptedFiles(acceptedFiles);
             setPromptText(`File dropped: ${droppedFile.name}`);
             console.log('File dropped:', droppedFile);
@@ -70,21 +101,35 @@ const CreateNoteForm = () => {
             <Form {...form}>
                 <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
                     <FormField control={form.control}
-                               name="name"
-                               render={({ field }) =>
-                                   <FormItem>
-                                       <FormControl>
-                                           <div {...getRootProps()} style={dropZoneStyle}>
-                                               <input {...getInputProps()} />
-                                               <p>{promptText}</p>
-                                           </div>
-                                       </FormControl>
-                                       <FormMessage />
-
-                                   </FormItem>}
+                        name="name"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormControl>
+                                    <div {...getRootProps()} style={dropZoneStyle}>
+                                        <input {...getInputProps()} />
+                                        <p>{promptText}</p>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>}
                     />
+                    {errorMessage && (
+                        <div className="mb-4 text-red-600">
+                            {errorMessage}
+                        </div>
+                    )}
+                    {successMessage && (
+                        <div className="mb-4 text-green-500">
+                            {successMessage}
+                        </div>
+                    )}
+                    {loading && (
+                        <div className="mb-4 text-blue-500">
+                            Uploading... Please wait.
+                        </div>
+                    )}
                     <DialogClose>
-                        <Button type="submit" className="w-full mt-5">
+                        <Button type="submit" className="w-full mt-5" disabled={loading}>
                             Upload file
                         </Button>
                     </DialogClose>

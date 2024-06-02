@@ -1,6 +1,7 @@
 package com.anirudhhanda.onestopbackend.registration;
 
 import com.anirudhhanda.onestopbackend.response.AuthResponse;
+import jdk.jshell.spi.ExecutionControlProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,13 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/registration")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegistrationRequest request){
+    public ResponseEntity<AuthResponse> register(@RequestBody RegistrationRequest request) throws Exception {
+        System.out.println("Outer Registraion called");
         return registrationService.register(request);
     }
 
     @PostMapping("/registration/admin")
-    public ResponseEntity<AuthResponse> registerAdmin(@RequestBody RegistrationRequest request){
+    public ResponseEntity<AuthResponse> registerAdmin(@RequestBody RegistrationRequest request) throws Exception{
         return registrationService.registerAdmin(request);
     }
 
