@@ -78,7 +78,7 @@ Built in 2 months time as a part of Mini-project by Anirudh Handa pursuing B.Tec
 
 ## 📞 Contact
 
-- **📧 Email:** [smvduignite@gmail.com](mailto:igniteservices3@gmail.com)
+- **📧 Email:** [igniteservices3@gmail.com](mailto:igniteservices3@gmail.com)
 - **📱 WhatsApp:** [Chat on WhatsApp](https://wa.me/7889853755)
 - **🔗 LinkedIn:** [Anirudh Handa](https://www.linkedin.com/in/anirudh-handa-138088237/)
 
